@@ -770,7 +770,6 @@
             <div class="vocal-block" id="vocal-block">
                 <div class="category-title">Cụm từ vocal</div>
                 <input type="text" id="vocal-phrase-1" placeholder="Cụm từ 1, ví dụ: where did you go..." value="where did you go...">
-                <input type="text" id="vocal-phrase-2" placeholder="Cụm từ 2, ví dụ: I miss you..." value="I miss you...">
                 
                 <div class="category-title">Hiệu ứng vocal</div>
                 <select id="vocal-effect">
@@ -970,12 +969,11 @@
                 // Vocal Phrases (if enabled)
                 if (vocalToggle.checked) {
                     const phrase1 = document.getElementById('vocal-phrase-1').value;
-                    const phrase2 = document.getElementById('vocal-phrase-2').value;
                     const effect = document.getElementById('vocal-effect').value;
                     const percentage = document.getElementById('vocal-percentage').value;
                     
                     prompt += '\n\n . Only use the following female vocal phrases (' + effect + '):\n';
-                    prompt += '"' + phrase1 + '" and "' + phrase2 + '"\n';
+                    prompt += '"' + phrase1 + '" . ' + '\n';
                     prompt += 'These phrases must be used very sparingly — less than ' + percentage + '% of the track.\n';
                     prompt += '❗️Do NOT generate any lyrics, full sentences, or additional vocal content beyond these phrases.\n';
                     prompt += 'The phrases should appear randomly or subtly repeated, drenched in reverb and delay, used as background textures, never as lead.';
