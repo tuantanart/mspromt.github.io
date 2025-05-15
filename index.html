@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chillstep Prompt Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #111827;
+            color: #e5e7eb;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .section {
+            background-color: #1f2937;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .title {
+            color: #9333ea;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #374151;
+            padding-bottom: 10px;
+        }
+        .checkbox-container {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+        .checkbox-label {
+            display: flex;
+            align-items: flex-start;
+            cursor: pointer;
+            width: 100%;
+        }
+        .checkbox-text {
+            flex: 1;
+            margin-left: 8px;
+            font-weight: 500;
+        }
+        .checkbox-description {
+            flex: 2;
+            color: #9ca3af;
+            font-size: 0.9rem;
+            margin-left: 10px;
+        }
+        input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        input[type="text"], textarea, select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            background-color: #374151;
+            border: 1px solid #4b5563;
+            color: #e5e7eb;
+            margin-bottom: 10px;
+        }
+        input[type="text"]:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #9333ea;
+        }
+        textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        button {
+            background-color: #7e22ce;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #6b21a8;
+        }
+        .result {
+            background-color: #1a1c2b;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 20px;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .category-group {
+            margin-bottom: 15px;
+        }
+        .category-title {
+            font-weight: 600;
+            color: #d8b4fe;
+            margin: 10px 0 5px 0;
+            font-size: 1rem;
+        }
+        .structure-block, .vocal-block {
+            padding: 15px;
+            background-color: #272e3f;
+            border-radius: 6px;
+            margin-top: 10px;
+            display: none;
+        }
+        .toggle-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .toggle-label {
+            margin-left: 8px;
+            font-weight: 500;
+        }
+        .subcategory {
+            margin-left: 20px;
+        }
+        .range-container {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        .range-label {
+            width: 40px;
+            text-align: right;
+            margin-left: 10px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #a855f7;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            font-size: 1.1rem;
+            color: #9ca3af;
+        }
+        @media (max-width: 768px) {
+            .checkbox-container {
+                flex-direction: column;
+            }
+            .checkbox-description {
+                margin-left: 24px;
+                margin-top: 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">Chillstep Prompt Generator</div>
+            <div class="subtitle">Tạo prompt tối ưu cho Riffusion</div>
+        </div>
+
+        <!-- Thể loại -->
+        <div class="section">
+            <div class="title">Thể loại Chillstep</div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="genre" value="chillstep" checked>
+                    <span class="checkbox-text">Chillstep</span>
+                    <span class="checkbox-description">Thể loại cơ bản kết hợp yếu tố dubstep với cảm giác thư giãn, nhịp độ chậm hơn, ít bass "wobble" hơn</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="genre" value="melodic chillstep">
+                    <span class="checkbox-text">Melodic Chillstep</span>
+                    <span class="checkbox-description">Tập trung vào giai điệu cảm xúc và hòa âm sâu sắc, thường có piano hoặc synth làm chủ đạo</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="genre" value="atmospheric chillstep">
+                    <span class="checkbox-text">Atmospheric Chillstep</span>
+                    <span class="checkbox-description">Tạo không gian âm thanh rộng, sâu, tập trung vào texture và ambient, thường có reverb mạnh</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="genre" value="future chillstep">
+                    <span class="checkbox-text">Future Chillstep</span>
+                    <span class="checkbox-description">Kết hợp yếu tố future bass với chillstep, có nhiều chi tiết sound design phức tạp hơn</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="genre" value="cinematic chillstep">
+                    <span class="checkbox-text">Cinematic Chillstep</span>
+                    <span class="checkbox-description">Mang tính điện ảnh, kịch tính, thường có dàn nhạc và cấu trúc phát triển rõ ràng</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="genre" value="dark chillstep">
+                    <span class="checkbox-text">Dark Chillstep</span>
+                    <span class="checkbox-description">Âm sắc tối, u ám, thường có sub bass sâu và không khí bí ẩn, đầy cảm xúc</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Nhạc cụ -->
+        <div class="section">
+            <div class="title">Nhạc cụ chính</div>
+            
+            <!-- Piano & Keys -->
+            <div class="category-group">
+                <div class="category-title">Piano & Keys</div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="instrument" value="reverb piano">
+                        <span class="checkbox-text">Reverb Piano</span>
+                        <span class="checkbox-description">Piano với hiệu ứng reverb dài, tạo không gian âm thanh rộng, thường là trung tâm giai điệu</span>
+                    </label>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="instrument" value="soft piano">
+                        <span class="checkbox-text">Soft Piano</span>
+                        <span class="checkbox-description">Piano nhẹ nhàng, thường được filter bớt high-end, tạo cảm giác ấm, mềm mại</span>
+                    </label>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="instrument" value="electric piano">
+                        <span class="checkbox-text">Electric Piano</span>
+                        <span class="checkbox-description">Piano điện (như Rhodes, Wurlitzer) với âm sắc ấm, vintage, thường đi với chorus/phaser</span>
+                    </label>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="instrument" value="processed piano">
+                        <span class="checkbox-text">Processed Piano</span>
+                        <span class="checkbox-description">Piano qua nhiều xử lý hiệu ứng, có âm sắc lạ, khác biệt với piano nguyên bản</span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Guitar -->
+            <div class="category-group">
+                <div class="category-title">Guitar</div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="instrument" value="acoustic guitar">
+                        <span class="checkbox-text">Acoustic Guitar</span>
+                        <span class="checkbox-description">Guitar acoustic tự nhiên, thường mang âm sắc ấm, organic, tạo cảm giác gần gũi</span>
+                    </label>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="instrument" value="electric guitar">
+                        <span class="checkbox-text">Electric Guitar</span>
+                        <span class="checkbox-description">Guitar điện, có thể clean hoặc có chút distortion, thường dùng làm melody hoặc lead</span>
+                    </label>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="instrument" value="reverbed electric guitar">
+                        <span class="checkbox-text">Reverbed Electric Guitar</span>
+                        <span class="checkbox-description">Guitar điện với reverb mạnh, tạo không gian rộng, thường dùng trong đoạn atmospheric</span>
+                    </label>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="instrument" value="echoed electric guitar">
+                        <span class="checkbox-text">Echoed Electric Guitar</span>
+                        <span class="checkbox-description">Guitar điện với echo/delay rõ rệt, tạo hiệu ứng lặp lại giai điệu, tăng chiều sâu</span>
+                    </label>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="instrument" value="ambient guitar">
+                        <span class="checkbox-text">Ambient Guitar</span>
+                        <span class="checkbox-description">Guitar được xử lý thành texture âm thanh không gian, ít nhận ra là guitar, nhiều reverb/delay</span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Synths -->
+            <div class="category-group">
+                <div class="category-title">Synths & Pads</div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="instrument" value="atmospheric pads">
+                        <span class="checkbox-text">Atmospheric Pads</span>
+                        <span class="checkbox-description">Pad tạo không gian rộng, thường là nền cho bài, tạo cảm giác bay bổng, sâu</span>
+                    </label>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="instrument" value="evolving pads">
+                        <span class="checkbox-text">Evolving Pads</span>
+                        <span class="checkbox-description">Pad có sự biến đổi theo thời gian, không cố định, tạo cảm giác chuyển động liên tục</span>
+                    </label>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="instrument" value="emotional synth lead">
+                        <span class="checkbox-text">Emotional Synth Lead</span>
+                        <span class="checkbox-description">Synth giai điệu mang nhiều cảm xúc, thường là focal point của bài, có sự phát triển</span>
+                    </label>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="instrument" value="ethereal synth">
+                        <span class="checkbox-text">Ethereal Synth</span>
+                        <span class="checkbox-description">Synth nhẹ, mỏng, như bay bổng, thường có filter tạo cảm giác dreamy, phi thực</span>
+                    </label>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="instrument" value="ambient textures">
+                        <span class="checkbox-text">Ambient Textures</span>
+                        <span class="checkbox-description">Các texture âm thanh không gian, không nhất thiết là nhạc cụ cụ thể, tạo background</span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Bass -->
+            <div class="category-group">
+                <div class="category-title">Bass</div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="instrument" value="deep sub bass">
+                        <span class="checkbox-text">Deep Sub Bass</span>
+                        <span class="checkbox-description">Bass tần số rất thấp, tạo nền tảng cho bài, ít chi tiết nhưng tạo cảm giác sâu, nặng</span>
+                    </label>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="instrument" value="subtle wobble bass">
+                        <span class="checkbox-text">Subtle Wobble Bass</span>
+                        <span class="checkbox-description">Bass có chút chuyển động "wobble" nhẹ, không quá mạnh như dubstep truyền thống</span>
+                    </label>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="instrument" value="warm sub bass">
+                        <span class="checkbox-text">Warm Sub Bass</span>
+                        <span class="checkbox-description">Bass ấm áp, có nhiều mid, tạo cảm giác đầy đặn hơn là mạnh mẽ</span>
+                    </label>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="instrument" value="textured bass">
+                        <span class="checkbox-text">Textured Bass</span>
+                        <span class="checkbox-description">Bass có nhiều chi tiết, texture, không phẳng như sub bass thuần túy</span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Strings & Orchestra -->
+            <div class="category-group">
+                <div class="category-title">Strings & Orchestra</div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="instrument" value="electronic violin">
+                        <span class="checkbox-text">Electronic Violin</span>
+                        <span class="checkbox-description">Violin điện tử, thường mang nhiều cảm xúc, có thể solo hoặc tạo giai điệu chính</span>
+                    </label>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="instrument" value="cinematic strings">
+                        <span class="checkbox-text">Cinematic Strings</span>
+                        <span class="checkbox-description">Dàn string orchestral, mang tính điện ảnh, tạo cảm xúc mạnh mẽ và không gian rộng</span>
+                    </label>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="instrument" value="layered strings">
+                        <span class="checkbox-text">Layered Strings</span>
+                        <span class="checkbox-description">Nhiều lớp dàn dây chồng lên nhau, tạo texture dày, thường dùng làm nền hoặc climax</span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Percussion -->
+            <div class="category-group">
+                <div class="category-title">Percussion</div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="instrument" value="half-time beats">
+                        <span class="checkbox-text">Half-time Beats</span>
+                        <span class="checkbox-description">Tiết tấu half-time, đặc trưng của chillstep, thường là 70-140 BPM với snare ở beat 3</span>
+                    </label>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="instrument" value="soft drums">
+                        <span class="checkbox-text">Soft Drums</span>
+                        <span class="checkbox-description">Trống nhẹ nhàng, không quá nổi bật, thường được nén hoặc filter để mềm hơn</span>
+                    </label>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="instrument" value="reverb drums">
+                        <span class="checkbox-text">Reverb Drums</span>
+                        <span class="checkbox-description">Trống với reverb dài, tạo cảm giác không gian, thường là snare hoặc hihat có reverb mạnh</span>
+                    </label>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="instrument" value="distant percussion">
+                        <span class="checkbox-text">Distant Percussion</span>
+                        <span class="checkbox-description">Percussion với cảm giác xa, thường dùng reverb/filter để đẩy xa trong mix</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Vocalise -->
+        <div class="section">
+            <div class="title">Vocalise/Vocals</div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="vocalise" value="ethereal female vocalise">
+                    <span class="checkbox-text">Ethereal Female Vocalise</span>
+                    <span class="checkbox-description">Giọng nữ mỏng, nhẹ như bay bổng, âm "ah", "oh", nhiều reverb, tạo cảm giác phi thực</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="vocalise" value="soft vocalise">
+                    <span class="checkbox-text">Soft Vocalise</span>
+                    <span class="checkbox-description">Giọng hát nhẹ nhàng, mềm mại, thường là ngân nga không lời, ít xử lý hiệu ứng</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="vocalise" value="processed vocal chops">
+                    <span class="checkbox-text">Processed Vocal Chops</span>
+                    <span class="checkbox-description">Các mảnh vocal nhỏ được cắt và xử lý, thường pitch shift, formant, tạo texture vocal</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="vocalise" value="distant vocals">
+                    <span class="checkbox-text">Distant Vocals</span>
+                    <span class="checkbox-description">Giọng hát có cảm giác xa, nhiều reverb/filter, tạo cảm giác không gian sâu</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="vocalise" value="layered vocalise">
+                    <span class="checkbox-text">Layered Vocalise</span>
+                    <span class="checkbox-description">Nhiều lớp giọng chồng lên nhau, tạo harmonic hoặc texture dày hơn</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="vocalise" value="wordless vocals">
+                    <span class="checkbox-text">Wordless Vocals</span>
+                    <span class="checkbox-description">Giọng hát không có lời, chỉ dùng âm "ah", "oh", "mmm" để tạo texture hoặc giai điệu</span>
+                </label>
+            </div>
+        </div>
+        
+        <!-- Mood -->
+        <div class="section">
+            <div class="title">Mood/Không khí</div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="mood" value="dreamy">
+                    <span class="checkbox-text">Dreamy</span>
+                    <span class="checkbox-description">Không khí mơ màng, như đang mơ, thường kết hợp với reverb, pad, và âm thanh lơ lửng</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="mood" value="melancholic">
+                    <span class="checkbox-text">Melancholic</span>
+                    <span class="checkbox-description">Cảm giác buồn man mác, không đau đớn nhưng trầm lắng, thường dùng minor key</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="mood" value="nostalgic">
+                    <span class="checkbox-text">Nostalgic</span>
+                    <span class="checkbox-description">Gợi cảm giác hoài niệm, nhớ nhung về quá khứ, thường có âm sắc vintage</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="mood" value="introspective">
+                    <span class="checkbox-text">Introspective</span>
+                    <span class="checkbox-description">Hướng nội, suy tư, thường có không gian rộng cho người nghe đắm chìm trong suy nghĩ</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="mood" value="atmospheric">
+                    <span class="checkbox-text">Atmospheric</span>
+                    <span class="checkbox-description">Tạo không khí rộng lớn, đầy không gian, thường nhiều reverb và ambient texture</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="mood" value="cinematic">
+                    <span class="checkbox-text">Cinematic</span>
+                    <span class="checkbox-description">Mang tính điện ảnh, kể chuyện, thường có cấu trúc phát triển rõ ràng và không gian lớn</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="mood" value="hopeful">
+                    <span class="checkbox-text">Hopeful</span>
+                    <span class="checkbox-description">Mang lại cảm giác hy vọng, thường có giai điệu hướng lên và harmonic sáng hơn</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="mood" value="ethereal">
+                    <span class="checkbox-text">Ethereal</span>
+                    <span class="checkbox-description">Cảm giác siêu thực, phi trần, như không thuộc thế giới này, thường nhiều texture mỏng</span>
+                </label>
+            </div>
+        </div>
+        
+        <!-- Kỹ thuật -->
+        <div class="section">
+            <div class="title">Kỹ thuật/Âm thanh đặc biệt</div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="technique" value="spacious reverb">
+                    <span class="checkbox-text">Spacious Reverb</span>
+                    <span class="checkbox-description">Reverb rộng, sâu, tạo không gian lớn, thường dùng với cả mix hoặc các yếu tố chính</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="technique" value="subtle filtering">
+                    <span class="checkbox-text">Subtle Filtering</span>
+                    <span class="checkbox-description">Lọc tần số tinh tế, thường là low-pass hoặc band-pass nhẹ, tạo cảm giác mềm mại</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="technique" value="tape saturation">
+                    <span class="checkbox-text">Tape Saturation</span>
+                    <span class="checkbox-description">Hiệu ứng băng cassette, thêm warmth và một chút harmonic distortion, âm analog</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="technique" value="gentle sidechain">
+                    <span class="checkbox-text">Gentle Sidechain</span>
+                    <span class="checkbox-description">Sidechain compression nhẹ nhàng, tạo hiệu ứng "breathing" tinh tế, không quá mạnh</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="technique" value="vinyl crackle">
+                    <span class="checkbox-text">Vinyl Crackle</span>
+                    <span class="checkbox-description">Âm thanh lốp đốp của đĩa than, tạo cảm giác lo-fi, vintage, hoài niệm</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="technique" value="tape hiss">
+                    <span class="checkbox-text">Tape Hiss</span>
+                    <span class="checkbox-description">Tiếng xì xào của băng cassette, thêm texture lo-fi và cảm giác cũ kỹ, hoài niệm</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="technique" value="wide stereo field">
+                    <span class="checkbox-text">Wide Stereo Field</span>
+                    <span class="checkbox-description">Không gian stereo rộng, các yếu tố được đặt ở nhiều vị trí khác nhau trong không gian</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="technique" value="layered textures">
+                    <span class="checkbox-text">Layered Textures</span>
+                    <span class="checkbox-description">Nhiều lớp texture âm thanh chồng lên nhau, tạo độ phức tạp và chiều sâu cho bài</span>
+                </label>
+            </div>
+        </div>
+        
+        <!-- Thông số kỹ thuật -->
+        <div class="section">
+            <div class="title">Chất lượng & Thông số</div>
+            <!-- BPM -->
+            <div class="category-group">
+                <div class="category-title">BPM (Tempo)</div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="quality" value="80 BPM">
+                        <span class="checkbox-text">80 BPM</span>
+                        <span class="checkbox-description">Tempo chậm, thư giãn, thích hợp cho Chillstep thiên về ambient, deep</span>
+                    </label>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="quality" value="90 BPM">
+                        <span class="checkbox-text">90 BPM</span>
+                        <span class="checkbox-description">Tempo cân bằng, vừa đủ năng lượng nhưng vẫn thư giãn, phổ biến trong Chillstep</span>
+                    </label>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="quality" value="110 BPM">
+                        <span class="checkbox-text">110 BPM</span>
+                        <span class="checkbox-description">Tempo hơi nhanh hơn, năng lượng vừa phải, thích hợp cho Chillstep năng động</span>
+                    </label>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="quality" value="130 BPM">
+                        <span class="checkbox-text">130 BPM</span>
+                        <span class="checkbox-description">Tempo nhanh, năng lượng cao, thích hợp cho Future Chillstep hoặc phong cách mạnh</span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Key/Scale -->
+            <div class="category-group">
+                <div class="category-title">Key/Scale</div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="quality" value="minor key">
+                        <span class="checkbox-text">Minor Key</span>
+                        <span class="checkbox-description">Thang âm minor, tạo cảm xúc buồn, trầm lắng, phổ biến trong Chillstep</span>
+                    </label>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="quality" value="major key">
+                        <span class="checkbox-text">Major Key</span>
+                        <span class="checkbox-description">Thang âm major, tạo cảm xúc tích cực, hy vọng, ít phổ biến hơn trong Chillstep</span>
+                    </label>
+                </div>
+            </div>
+            
+            <!-- Chất lượng -->
+            <div class="category-group">
+                <div class="category-title">Chất lượng</div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="quality" value="high quality" checked>
+                        <span class="checkbox-text">High Quality</span>
+                        <span class="checkbox-description">Chất lượng âm thanh cao, thường cải thiện kết quả tổng thể từ Riffusion</span>
+                    </label>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="quality" value="professional production">
+                        <span class="checkbox-text">Professional Production</span>
+                        <span class="checkbox-description">Chất lượng sản xuất chuyên nghiệp, mix/master tốt, sound design chất lượng</span>
+                    </label>
+                </div>
+                <div class="checkbox-container">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="quality" value="immersive production">
+                        <span class="checkbox-text">Immersive Production</span>
+                        <span class="checkbox-description">Sản xuất tạo cảm giác đắm chìm, không gian 3D, chi tiết âm thanh phong phú</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Structure -->
+        <div class="section">
+            <div class="title">Cấu trúc bài (Structure)</div>
+            <div class="toggle-container">
+                <input type="checkbox" id="structure-toggle">
+                <label for="structure-toggle" class="toggle-label">Thêm Structure</label>
+            </div>
+            <div class="structure-block" id="structure-block">
+                <div class="category-title">Intro</div>
+                <textarea id="intro-description" placeholder="Mô tả intro, ví dụ: Ambient textures with reversed piano and filtered noise">Ambient textures with reversed piano and filtered noise</textarea>
+                
+                <div class="category-title">Verse</div>
+                <textarea id="verse-description" placeholder="Mô tả verse, ví dụ: Soft future garage beat with ambient pads and subtle vocal elements">Soft future garage beat with ambient pads and subtle vocal elements</textarea>
+                
+                <div class="category-title">Bridge</div>
+                <textarea id="bridge-description" placeholder="Mô tả bridge, ví dụ: Cinematic ambient section with string swells and minimal textures">Cinematic ambient section with string swells and minimal textures</textarea>
+                
+                <div class="category-title">Outro</div>
+                <textarea id="outro-description" placeholder="Mô tả outro, ví dụ: Gradually remove percussion, let textures fade like memory dissolving">Gradually remove percussion, let textures fade like memory dissolving</textarea>
+            </div>
+        </div>
+        
+        <!-- Vocal Phrases -->
+        <div class="section">
+            <div class="title">Vocal Phrases (Tùy chọn)</div>
+            <div class="toggle-container">
+                <input type="checkbox" id="vocal-toggle">
+                <label for="vocal-toggle" class="toggle-label">Thêm Vocal Phrases</label>
+            </div>
+            <div class="vocal-block" id="vocal-block">
+                <div class="category-title">Cụm từ vocal</div>
+                <input type="text" id="vocal-phrase-1" placeholder="Cụm từ 1, ví dụ: where did you go..." value="where did you go...">
+                <input type="text" id="vocal-phrase-2" placeholder="Cụm từ 2, ví dụ: I miss you..." value="I miss you...">
+                
+                <div class="category-title">Hiệu ứng vocal</div>
+                <select id="vocal-effect">
+                    <option value="whispered, echoing">Whispered, Echoing (thì thầm, vang vọng)</option>
+                    <option value="dreamy, reverbed">Dreamy, Reverbed (mơ màng, reverb mạnh)</option>
+                    <option value="distant, filtered">Distant, Filtered (xa, được lọc)</option>
+                    <option value="ethereal, layered">Ethereal, Layered (siêu thực, nhiều lớp)</option>
+                </select>
+                
+                <div class="category-title">Phần trăm sử dụng</div>
+                <div class="range-container">
+                    <input type="range" id="vocal-percentage" min="5" max="30" value="10" step="5">
+                    <span class="range-label" id="percentage-value">10%</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Nghệ sĩ tham chiếu -->
+        <div class="section">
+            <div class="title">Nghệ sĩ tham chiếu (Tùy chọn)</div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="artist" value="Blackmill">
+                    <span class="checkbox-text">Blackmill</span>
+                    <span class="checkbox-description">Melodic chillstep, piano-driven, emotional, atmospheric, nhiều reverb và giai điệu đẹp</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="artist" value="Phaeleh">
+                    <span class="checkbox-text">Phaeleh</span>
+                    <span class="checkbox-description">Sâu lắng, nhiều bass, ảnh hưởng UK garage và dubstep, thường có vocal chops</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="artist" value="CMA">
+                    <span class="checkbox-text">CMA</span>
+                    <span class="checkbox-description">Chi tiết, emotional, nhiều piano, âm thanh tinh tế và sản xuất chất lượng cao</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="artist" value="Vacant">
+                    <span class="checkbox-text">Vacant</span>
+                    <span class="checkbox-description">Lo-fi texture, atmospheric, nhiều ambient và pad, cảm xúc sâu lắng</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="artist" value="Seven Lions">
+                    <span class="checkbox-text">Seven Lions</span>
+                    <span class="checkbox-description">Melodic, powerful, cinematic, kết hợp nhiều thể loại, sound design phức tạp</span>
+                </label>
+            </div>
+            <div class="checkbox-container">
+                <label class="checkbox-label">
+                    <input type="checkbox" name="artist" value="MitiS">
+                    <span class="checkbox-text">MitiS</span>
+                    <span class="checkbox-description">Piano-driven, emotional, melodic, kết hợp classical và electronic</span>
+                </label>
+            </div>
+        </div>
+        
+        <!-- Kết quả -->
+        <div class="section">
+            <div class="title">Prompt được tạo</div>
+            <div class="result" id="result"></div>
+            <button id="copy-button" class="mt-4">Sao chép Prompt</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Toggle Structure block
+            const structureToggle = document.getElementById('structure-toggle');
+            const structureBlock = document.getElementById('structure-block');
+            
+            structureToggle.addEventListener('change', function() {
+                structureBlock.style.display = this.checked ? 'block' : 'none';
+                generatePrompt();
+            });
+            
+            // Toggle Vocal block
+            const vocalToggle = document.getElementById('vocal-toggle');
+            const vocalBlock = document.getElementById('vocal-block');
+            
+            vocalToggle.addEventListener('change', function() {
+                vocalBlock.style.display = this.checked ? 'block' : 'none';
+                generatePrompt();
+            });
+            
+            // Vocal percentage slider
+            const vocalPercentage = document.getElementById('vocal-percentage');
+            const percentageValue = document.getElementById('percentage-value');
+            
+            vocalPercentage.addEventListener('input', function() {
+                percentageValue.textContent = this.value + '%';
+                generatePrompt();
+            });
+            
+            // Add event listeners to all inputs to update the prompt
+            const allInputs = document.querySelectorAll('input[type="checkbox"], textarea, input[type="text"], select, input[type="range"]');
+            allInputs.forEach(input => {
+                input.addEventListener('change', generatePrompt);
+            });
+            
+            // Copy button
+            const copyButton = document.getElementById('copy-button');
+            copyButton.addEventListener('click', function() {
+                const result = document.getElementById('result');
+                const range = document.createRange();
+                range.selectNode(result);
+                window.getSelection().removeAllRanges();
+                window.getSelection().addRange(range);
+                document.execCommand('copy');
+                window.getSelection().removeAllRanges();
+                
+                const originalText = copyButton.textContent;
+                copyButton.textContent = 'Đã sao chép!';
+                setTimeout(() => {
+                    copyButton.textContent = originalText;
+                }, 2000);
+            });
+            
+            // Generate prompt on load
+            generatePrompt();
+            
+            // Function to generate the prompt
+            function generatePrompt() {
+                let prompt = '';
+                
+                // 1. Thể loại
+                const genres = Array.from(document.querySelectorAll('input[name="genre"]:checked')).map(input => input.value);
+                if (genres.length > 0) {
+                    prompt += genres.join(' ');
+                } else {
+                    prompt += 'chillstep';
+                }
+                
+                // 2. Nhạc cụ chính
+                const instruments = Array.from(document.querySelectorAll('input[name="instrument"]:checked')).map(input => input.value);
+                if (instruments.length > 0) {
+                    prompt += ' with ' + instruments.join(' and ');
+                }
+                
+                // 3. Vocalise
+                const vocalises = Array.from(document.querySelectorAll('input[name="vocalise"]:checked')).map(input => input.value);
+                if (vocalises.length > 0) {
+                    prompt += ', ' + vocalises.join(', ');
+                }
+                
+                // 4. Mood/Không khí
+                const moods = Array.from(document.querySelectorAll('input[name="mood"]:checked')).map(input => input.value);
+                if (moods.length > 0) {
+                    prompt += ', ' + moods.join(' ') + ' mood';
+                }
+                
+                // 5. Kỹ thuật/Âm thanh đặc biệt
+                const techniques = Array.from(document.querySelectorAll('input[name="technique"]:checked')).map(input => input.value);
+                if (techniques.length > 0) {
+                    prompt += ', ' + techniques.join(' and ');
+                }
+                
+                // 6. Nghệ sĩ tham chiếu
+                const artists = Array.from(document.querySelectorAll('input[name="artist"]:checked')).map(input => input.value);
+                if (artists.length > 0) {
+                    prompt += ', in the style of ' + artists.join(' and ');
+                }
+                
+                // 7. Chất lượng & Thông số
+                const qualities = Array.from(document.querySelectorAll('input[name="quality"]:checked')).map(input => input.value);
+                if (qualities.length > 0) {
+                    prompt += ', ' + qualities.join(', ');
+                }
+                
+                // Structure (if enabled)
+                if (structureToggle.checked) {
+                    const intro = document.getElementById('intro-description').value;
+                    const verse = document.getElementById('verse-description').value;
+                    const bridge = document.getElementById('bridge-description').value;
+                    const outro = document.getElementById('outro-description').value;
+                    
+                    prompt += '\n\nStructure:\n';
+                    prompt += 'Intro: [' + intro + ']\n';
+                    prompt += 'Verse: [' + verse + ']\n';
+                    prompt += 'Bridge: [' + bridge + ']\n';
+                    prompt += 'Outro: [' + outro + ']';
+                }
+                
+                // Vocal Phrases (if enabled)
+                if (vocalToggle.checked) {
+                    const phrase1 = document.getElementById('vocal-phrase-1').value;
+                    const phrase2 = document.getElementById('vocal-phrase-2').value;
+                    const effect = document.getElementById('vocal-effect').value;
+                    const percentage = document.getElementById('vocal-percentage').value;
+                    
+                    prompt += '\n\nOnly use the following female vocal phrases (' + effect + '):\n';
+                    prompt += '"' + phrase1 + '" and "' + phrase2 + '"\n';
+                    prompt += 'These phrases must be used very sparingly — less than ' + percentage + '% of the track.\n';
+                    prompt += '❗️Do NOT generate any lyrics, full sentences, or additional vocal content beyond these phrases.\n';
+                    prompt += 'The phrases should appear randomly or subtly repeated, drenched in reverb and delay, used as background textures, never as lead.';
+                }
+                
+                document.getElementById('result').textContent = prompt;
+            }
+        });
+    </script>
+</body>
+</html>
