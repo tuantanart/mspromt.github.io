@@ -1166,7 +1166,8 @@
                     const percentage = document.getElementById('vocal-percentage').value;
                     
                     prompt += '\n\n .This is chillstep music so it uses almost no lyrics, just repetitive emotional phrases, so you can only write [Structure] and [Musics, Effects, Instructions and other...]. Only use the following female vocal phrases with effects(' + effect + ') :\n';
-                    prompt += '"' + phrase1 + '" . ' + ', For example:"[Intro]
+                    prompt += '"' + phrase1 + '" . ' + '\n' ;
+                    prompt += 'For example:"[Intro]
 [Piano, reverb; atmospheric keys]
 [Breath]
 (where are you…)
@@ -1179,8 +1180,7 @@ La… la la la…
 [Electric guitar echoes]
 …are… (you)
 Ohhh…
-"\n' ;
-                    prompt += 'These phrases must be used very sparingly — less than ' + percentage + '% of the track.\n';
+more.....". These phrases must be used very sparingly — less than ' + percentage + '% of the track.\n';
                     prompt += '.Make full use of the instruments I provide, may add other instruments to help deepen and enhance the emotional impact and mood, creating a soulful track that truly touches the listener’s heart. !!!Do NOT generate any lyrics, full sentences, or additional vocal content beyond these phrases.\n';
                     prompt += 'The phrases should appear randomly or subtly repeated, drenched in reverb and delay, used as background textures, never as lead.';
                 }
